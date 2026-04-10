@@ -7,12 +7,12 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 // ============================================================
-// HALAMAN PUBLIK
+// PUBLIK (Tidak perlu login)
 // ============================================================
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Home::index');  // Landing page
 
 // ============================================================
-// AUTH (login, register, logout)
+// AUTH ROUTES
 // ============================================================
 $routes->group('auth', function ($routes) {
     $routes->get('login',           'Auth\AuthController::login');
@@ -23,29 +23,30 @@ $routes->group('auth', function ($routes) {
 });
 
 // ============================================================
-// MASYARAKAT — harus login, role: masyarakat
+// MASYARAKAT ROUTES (Role: masyarakat)
 // ============================================================
 $routes->group('pengaduan', ['filter' => 'auth:masyarakat'], function ($routes) {
-    $routes->get('/',               'Masyarakat\PengaduanController::index');       // daftar pengaduan saya
-    $routes->get('buat',            'Masyarakat\PengaduanController::buat');        // form buat pengaduan
-    $routes->post('buat',           'Masyarakat\PengaduanController::simpan');      // proses simpan
-    $routes->get('detail/(:num)',   'Masyarakat\PengaduanController::detail/$1');   // detail + tracking
-    $routes->post('komentar/(:num)','Masyarakat\PengaduanController::komentar/$1'); // kirim komentar
+    $routes->get('/',                  'Masyarakat\PengaduanController::index');
+    $routes->get('buat',               'Masyarakat\PengaduanController::buat');
+    $routes->post('buat',              'Masyarakat\PengaduanController::simpan');
+    $routes->get('detail/(:num)',      'Masyarakat\PengaduanController::detail/$1');
+    $routes->post('komentar/(:num)',   'Masyarakat\PengaduanController::komentar/$1');
 });
 
 // ============================================================
-// OPERATOR/PETUGAS — harus login, role: operator
+// OPERATOR ROUTES (Role: operator)
 // ============================================================
 $routes->group('operator', ['filter' => 'auth:operator'], function ($routes) {
     $routes->get('/',                       'Operator\DashboardController::index');
+    $routes->get('dashboard',               'Operator\DashboardController::index');
 
-    // Kelola pengaduan
+    // Pengaduan management
     $routes->get('pengaduan',               'Operator\PengaduanController::index');
-    $routes->get('pengaduan/(:num)',         'Operator\PengaduanController::detail/$1');
+    $routes->get('pengaduan/(:num)',        'Operator\PengaduanController::detail/$1');
     $routes->post('pengaduan/status/(:num)', 'Operator\PengaduanController::updateStatus/$1');
-    $routes->post('pengaduan/komentar/(:num)','Operator\PengaduanController::komentar/$1');
+    $routes->post('pengaduan/komentar/(:num)', 'Operator\PengaduanController::komentar/$1');
 
-    // Kelola kategori
+    // Kategori management
     $routes->get('kategori',                'Operator\KategoriController::index');
     $routes->get('kategori/buat',           'Operator\KategoriController::buat');
     $routes->post('kategori/simpan',        'Operator\KategoriController::simpan');
@@ -53,7 +54,7 @@ $routes->group('operator', ['filter' => 'auth:operator'], function ($routes) {
     $routes->post('kategori/update/(:num)', 'Operator\KategoriController::update/$1');
     $routes->post('kategori/hapus/(:num)',  'Operator\KategoriController::hapus/$1');
 
-    // Kelola pengguna
+    // Pengguna management
     $routes->get('pengguna',                'Operator\PenggunaController::index');
     $routes->post('pengguna/status/(:num)', 'Operator\PenggunaController::updateStatus/$1');
 });
