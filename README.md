@@ -1,69 +1,144 @@
-# CodeIgniter 4 Application Starter
+# Sistem Pengaduan Masyarakat — Desa Sukasari
+> Dibangun dengan CodeIgniter 4 + MySQL
 
-## What is CodeIgniter?
+---
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Prasyarat
+- PHP >= 8.1
+- MySQL >= 5.7 / MariaDB >= 10.3
+- Composer
+- Web server (Apache/Nginx) atau PHP built-in server
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+---
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Langkah Instalasi
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+### 1. Clone / buat project CI4
+```bash
+composer create-project codeigniter4/appstarter pengaduan-sukasari
+cd pengaduan-sukasari
+```
 
-## Installation & updates
+### 2. Copy semua file dari folder ini ke project CI4 kamu
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+### 3. Setup environment
+```bash
+# Copy file .env
+cp .env.example .env
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+# Edit .env — sesuaikan database
+nano .env
+```
 
-## Setup
+Isi bagian database di `.env`:
+```
+database.default.hostname = localhost
+database.default.database = db_pengaduan_sukasari
+database.default.username = root
+database.default.password = YOUR_PASSWORD
+```
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+### 4. Generate encryption key
+```bash
+php spark key:generate
+```
 
-## Important Change with index.php
+### 5. Buat database di MySQL
+```sql
+CREATE DATABASE db_pengaduan_sukasari
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+```
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+### 6. Jalankan migration
+```bash
+php spark migrate
+```
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+### 7. Jalankan seeder (data awal)
+```bash
+php spark db:seed DatabaseSeeder
+```
 
-**Please** read the user guide for a better explanation of how CI4 works!
+Output yang diharapkan:
+```
+✓ RoleSeeder selesai
+✓ UserSeeder selesai
+  → Operator  : operator@sukasari.desa.id / admin123
+  → Masyarakat: warga@sukasari.desa.id / warga123
+✓ KategoriSeeder selesai (6 kategori)
+```
 
-## Repository Management
+### 8. Jalankan server
+```bash
+php spark serve
+```
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+Akses di: http://localhost:8080
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+---
 
-## Server Requirements
+## Akun Default
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+| Role       | Email                          | Password  |
+|------------|-------------------------------|-----------|
+| Operator   | operator@sukasari.desa.id     | admin123  |
+| Masyarakat | warga@sukasari.desa.id        | warga123  |
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+> **PENTING**: Ganti password default sebelum deploy ke production!
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+---
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+## Struktur Folder Penting
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+```
+app/
+├── Config/
+│   ├── App.php          ← Konfigurasi app
+│   ├── Database.php     ← Konfigurasi database
+│   ├── Filters.php      ← Daftar filter/middleware
+│   └── Routes.php       ← Semua routing
+├── Controllers/
+│   ├── Auth/            ← Login, Register, Logout
+│   ├── Masyarakat/      ← Fitur untuk warga
+│   └── Operator/        ← Fitur untuk petugas
+├── Database/
+│   ├── Migrations/      ← Struktur tabel
+│   └── Seeds/           ← Data awal
+├── Filters/
+│   └── AuthFilter.php   ← Middleware cek login & role
+├── Models/              ← (langkah berikutnya)
+└── Views/               ← (langkah berikutnya)
+public/
+├── .htaccess            ← Hapus index.php dari URL
+└── uploads/             ← Folder upload foto (buat manual)
+```
+
+---
+
+## Perintah Spark yang Berguna
+
+```bash
+php spark serve              # Jalankan server
+php spark migrate            # Jalankan semua migration
+php spark migrate:rollback   # Rollback migration terakhir
+php spark migrate:refresh    # Reset + jalankan ulang semua migration
+php spark db:seed DatabaseSeeder  # Jalankan seeder
+php spark make:controller NamaController  # Buat controller baru
+php spark make:model NamaModel            # Buat model baru
+```
+
+---
+
+## Roadmap Pengerjaan
+
+- [x] Setup konfigurasi CI4
+- [x] Database migrations (7 tabel)
+- [x] Seeder data awal
+- [x] AuthFilter middleware
+- [x] Routing lengkap
+- [ ] Models (langkah berikutnya)
+- [ ] Controllers Auth
+- [ ] Controllers Masyarakat
+- [ ] Controllers Operator
+- [ ] Views & UI (MongoDB-inspired design)
