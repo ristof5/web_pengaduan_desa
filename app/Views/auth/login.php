@@ -6,12 +6,12 @@
         <!-- Logo & Title -->
         <div style="text-align: center; margin-bottom: 40px;">
             <div style="background: #00ed64; width: 60px; height: 60px; border-radius: 12px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#001e2b" stroke-width="2">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#001e2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
                 </svg>
             </div>
-            <h1 style="color: #fff; font-size: 28px; margin: 0 0 8px; font-family: Georgia, serif;">Sukasari Digital</h1>
-            <p style="color: #b8c4c2; font-size: 14px; margin: 0; letter-spacing: 2px; text-transform: uppercase; font-family: 'Source Code Pro', monospace;">Masuk ke Akun</p>
+            <h1 style="color: #fff; font-size: 28px; margin: 0 0 8px; font-family: Georgia, serif; font-weight: 400;">Sukasari Digital</h1>
+            <p style="color: #b8c4c2; font-size: 12px; margin: 0; letter-spacing: 2px; text-transform: uppercase; font-family: 'Source Code Pro', monospace; font-weight: 500;">Masuk ke Akun</p>
         </div>
 
         <!-- Alert Messages -->
@@ -34,20 +34,24 @@
             <div style="margin-bottom: 20px;">
                 <label style="display: block; color: #fff; font-size: 14px; margin-bottom: 8px; font-weight: 500;">Email</label>
                 <input type="email" name="email" value="<?= old('email') ?>" 
-                       style="width: 100%; padding: 12px 16px; border: 1px solid #3d4f58; border-radius: 8px; background: #0a2f42; color: #fff; font-size: 14px; box-sizing: border-box;"
-                       placeholder="email@example.com" required>
+                       style="width: 100%; padding: 12px 16px; border: 1px solid #3d4f58; border-radius: 8px; background: #0a2f42; color: #fff; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s;"
+                       placeholder="email@example.com" required 
+                       onblur="this.style.borderColor='#3d4f58'" 
+                       onfocus="this.style.borderColor='#00ed64'">
             </div>
 
             <!-- Password -->
             <div style="margin-bottom: 24px;">
                 <label style="display: block; color: #fff; font-size: 14px; margin-bottom: 8px; font-weight: 500;">Password</label>
                 <input type="password" name="password" 
-                       style="width: 100%; padding: 12px 16px; border: 1px solid #3d4f58; border-radius: 8px; background: #0a2f42; color: #fff; font-size: 14px; box-sizing: border-box;"
-                       placeholder="••••••••" required>
+                       style="width: 100%; padding: 12px 16px; border: 1px solid #3d4f58; border-radius: 8px; background: #0a2f42; color: #fff; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s;"
+                       placeholder="••••••••" required 
+                       onblur="this.style.borderColor='#3d4f58'" 
+                       onfocus="this.style.borderColor='#00ed64'">
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" style="width: 100%; background: #00684a; color: #fff; border: none; padding: 12px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-bottom: 16px;">
+            <button type="submit" style="width: 100%; background: #00684a; color: #fff; border: none; padding: 12px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-bottom: 16px; font-family: inherit;">
                 Masuk Sekarang
             </button>
 
@@ -60,9 +64,11 @@
 
         <!-- Demo Credentials -->
         <div style="background: #0a2f42; border: 1px solid #1c3a4a; border-radius: 12px; padding: 20px; margin-top: 20px; color: #b8c4c2; font-size: 12px;">
-            <p style="margin: 0 0 10px 0; color: #00ed64; font-weight: 600;">📝 Test Credentials:</p>
-            <p style="margin: 5px 0;"><strong>Masyarakat:</strong> warga@sukasari.desa.id / warga123</p>
-            <p style="margin: 5px 0;"><strong>Operator:</strong> operator@sukasari.desa.id / admin123</p>
+            <p style="margin: 0 0 12px 0; color: #00ed64; font-weight: 600; font-family: 'Source Code Pro', monospace; letter-spacing: 1px;">📝 TEST CREDENTIALS:</p>
+            <p style="margin: 6px 0;"><strong>Masyarakat:</strong></p>
+            <p style="margin: 2px 0 10px 0; color: #aaa; font-size: 11px;">warga@sukasari.desa.id / warga123</p>
+            <p style="margin: 6px 0;"><strong>Operator:</strong></p>
+            <p style="margin: 2px 0; color: #aaa; font-size: 11px;">operator@sukasari.desa.id / admin123</p>
         </div>
 
     </div>
