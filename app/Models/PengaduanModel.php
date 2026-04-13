@@ -87,6 +87,7 @@ class PengaduanModel extends Model
      * Ambil data pengaduan lengkap (join kategori + user pelapor + operator).
      * Dipakai di halaman detail — masyarakat & operator.
      */
+    
     public function getPengaduanLengkap(int $id): ?array
     {
         return $this->select('
