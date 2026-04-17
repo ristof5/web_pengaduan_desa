@@ -12,7 +12,7 @@ class Home extends BaseController
                 redirect()->to('/operator')->send();
             }
             redirect()->to('/pengaduan')->send();
-        }
+        }   
 
         // Landing page publik
         return view('home/index');

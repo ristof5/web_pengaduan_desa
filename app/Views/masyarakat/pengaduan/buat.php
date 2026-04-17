@@ -1,8 +1,12 @@
 <?= $this->include('layout/header') ?>
 
 <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     :root {
         --forest-black: #001e2b;
         --mongodb-green: #00ed64;
@@ -320,7 +324,7 @@
         <div class="sidebar-brand">
             <div class="sidebar-brand-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#001e2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+                    <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
                 </svg>
             </div>
             <div class="sidebar-brand-text">PENGADUAN</div>
@@ -330,7 +334,8 @@
             <li class="sidebar-menu-item">
                 <a href="/pengaduan" class="sidebar-menu-link">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
                     </svg>
                     Pengaduan Saya
                 </a>
@@ -338,7 +343,7 @@
             <li class="sidebar-menu-item">
                 <a href="/pengaduan/buat" class="sidebar-menu-link active">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 5v14M5 12h14"/>
+                        <path d="M12 5v14M5 12h14" />
                     </svg>
                     Buat Pengaduan Baru
                 </a>
@@ -346,7 +351,9 @@
             <li class="sidebar-menu-item" style="border-top: 1px solid var(--teal-gray); padding-top: 10px; margin-top: 10px;">
                 <a href="/auth/logout" class="sidebar-menu-link" style="color: #ff6b6b;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
                     </svg>
                     Logout
                 </a>
@@ -374,8 +381,25 @@
                 <h2 class="form-title">Form Pengaduan</h2>
                 <p class="form-subtitle">Sampaikan laporan Anda dengan detail yang jelas agar dapat ditangani dengan baik.</p>
 
+                <?php if (session()->getFlashdata('error')): ?>
+                    <div style="background: #f8d7da; border-left: 4px solid #dc3545; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <?= session()->getFlashdata('error') ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (session()->getFlashdata('errors')): ?>
+                    <div style="background: #f8d7da; border-left: 4px solid #dc3545; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <ul style="margin: 0; padding-left: 20px;">
+                            <?php foreach (session()->getFlashdata('errors') as $err): ?>
+                                <li><?= esc($err) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+
                 <form action="/pengaduan/buat" method="POST" enctype="multipart/form-data">
-                    <!-- Kategori -->
+                    <?= csrf_field() ?>
+
                     <div class="form-group">
                         <label class="form-label">
                             Kategori Pengaduan <span class="required">*</span>
@@ -391,34 +415,30 @@
                         </select>
                     </div>
 
-                    <!-- Judul -->
                     <div class="form-group">
                         <label class="form-label">
                             Judul Pengaduan <span class="required">*</span>
                         </label>
-                        <input type="text" name="judul" class="form-input" placeholder="Contoh: Jalan di Jl. Raya Sukasari berlubang" required>
+                        <input type="text" name="judul" class="form-input" placeholder="Contoh: Jalan di Jl. Raya Sukasari berlubang" required value="<?= old('judul') ?>">
                         <p class="form-hint">Berikan judul singkat yang menggambarkan masalah Anda</p>
                     </div>
 
-                    <!-- Deskripsi -->
                     <div class="form-group">
                         <label class="form-label">
                             Deskripsi Detail <span class="required">*</span>
                         </label>
-                        <textarea name="deskripsi" class="form-textarea" placeholder="Jelaskan masalah secara detail, lokasi tepatnya, dan dampak yang dirasakan..." required></textarea>
+                        <textarea name="deskripsi" class="form-textarea" placeholder="Jelaskan masalah secara detail, lokasi tepatnya, dan dampak yang dirasakan..." required><?= old('deskripsi') ?></textarea>
                         <p class="form-hint">Semakin detail, semakin cepat kami dapat menangani</p>
                     </div>
 
-                    <!-- Lokasi -->
                     <div class="form-group">
                         <label class="form-label">
                             Lokasi <span class="required">*</span>
                         </label>
-                        <input type="text" name="lokasi" class="form-input" placeholder="Contoh: Jl. Raya Sukasari RT 001/002" required>
+                        <input type="text" name="lokasi" class="form-input" placeholder="Contoh: Jl. Raya Sukasari RT 001/002" required value="<?= old('lokasi') ?>">
                         <p class="form-hint">Lokasi kejadian atau area yang dimaksud</p>
                     </div>
 
-                    <!-- Prioritas -->
                     <div class="form-group">
                         <label class="form-label">
                             Tingkat Prioritas <span class="required">*</span>
@@ -432,25 +452,23 @@
                         <p class="form-hint">Berdasarkan urgensi masalah yang dilaporkan</p>
                     </div>
 
-                    <!-- Foto -->
                     <div class="form-group">
                         <label class="form-label">
                             Foto Bukti (Opsional)
                         </label>
                         <label class="file-upload">
                             <div class="file-upload-icon">📸</div>
-                            <input type="file" name="foto" accept="image/*">
+                            <input type="file" name="foto[]" accept="image/*" multiple>
                             <div class="file-upload-text">
                                 <strong>Klik atau drag foto di sini</strong><br>
-                                <small>Format: JPG, PNG | Max: 3MB</small>
+                                <small>Format: JPG, PNG | Max: 3MB per foto (Bisa pilih maksimal 3)</small>
                             </div>
                         </label>
                         <p class="form-hint">Foto bukti akan membantu verifikasi masalah Anda</p>
                     </div>
 
-                    <!-- Actions -->
                     <div class="form-actions">
-                        <a href="/pengaduan" class="btn btn-secondary">Batal</a>
+                        <a href="/pengaduan" class="btn btn-secondary" style="text-align: center;">Batal</a>
                         <button type="submit" class="btn btn-primary">✓ Kirim Pengaduan</button>
                     </div>
                 </form>

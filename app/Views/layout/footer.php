@@ -5,7 +5,7 @@
             <p style="font-size: 14px;">Bekasi Regency, West Java, Indonesia.</p>
         </div>
         <div class="label-tech" style="font-size: 12px;">
-            &copy; 2026 Sukasari Digital • Built with CI4 & MongoDB Aesthetics
+            &copy; 2026 Sukasari Digital. All rights reserved.
         </div>
     </div>
 </footer>
